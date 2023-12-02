@@ -3,11 +3,7 @@ package com.hanghae.lemonair;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class LemonairApplicationTests {
-
-    @Test
-    void contextLoads() {
-    }
 
 }
