@@ -5,6 +5,10 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+
+### Secret ###
+application-secret.yml
+
 ### STS ###
 .apt_generated
 .classpath
