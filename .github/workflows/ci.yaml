@@ -30,3 +30,23 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew clean build
+
+      - name: Docker build
+        run:
+          docker login -u ${{ secrets.DOCKER_ID }} -p ${{ secrets.DOCKER_PWD }}
+          docker build -t forestgreening/lemonair:latest .
+          docker push forestgreening/lemonair:latest
+
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          script: |
+            cd scripts
+            sudo docker ps -a -q --filter "name=app" | grep -q . && docker stop app && docker rm app | true
+            sudo docker rmi forestgreening/lemonair:latest
+            sudo docker pull forestgreening/lemonair:latest
+            docker run -d -p 8080:8080 --env-file=env_list.txt --name app forestgreening/lemonair:latest
+            docker rmi -f $(docker images -f "dangling=true" -q) || true
