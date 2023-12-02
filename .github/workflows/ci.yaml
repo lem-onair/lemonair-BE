@@ -34,8 +34,8 @@ jobs:
       - name: Docker build
         run:
           docker login -u ${{ secrets.DOCKER_ID }} -p ${{ secrets.DOCKER_PWD }}
-          docker build -t forestgreening/lemonair:latest .
-          docker push forestgreening/lemonair:latest
+          docker build -t ${{ secrets.DOCKER_ID }}/${{ secrets.DOCKER_REPO }} .
+          docker push ${{ secrets.DOCKER_ID }}/${{ secrets.DOCKER_REPO }}
 
       - name: Deploy
         uses: appleboy/ssh-action@master
@@ -46,7 +46,7 @@ jobs:
           script: |
             cd scripts
             sudo docker ps -a -q --filter "name=app" | grep -q . && docker stop app && docker rm app | true
-            sudo docker rmi forestgreening/lemonair:latest
-            sudo docker pull forestgreening/lemonair:latest
-            docker run -d -p 8080:8080 --env-file=env_list.txt --name app forestgreening/lemonair:latest
+            sudo docker rmi ${{ secrets.DOCKER_ID }}/${{ secrets.DOCKER_REPO }}
+            sudo docker pull ${{ secrets.DOCKER_ID }}/${{ secrets.DOCKER_REPO }}
+            docker run -d -p 8080:8080 --env-file=env_list.txt --name app ${{ secrets.DOCKER_ID }}/${{ secrets.DOCKER_REPO }}
             docker rmi -f $(docker images -f "dangling=true" -q) || true
