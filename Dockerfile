@@ -8,4 +8,4 @@ COPY ${JAR_FILE} app.jar
 
 ENV PROFILE release
 
-ENTRYPOINT ["java", "-Dspring.profiles.active=${PROFILE}", "-jar","/app.jar"]
+ENTRYPOINT ["java", "-Dcom.amazonaws.sdk.disableEc2Metadata=true", "-Dspring.profiles.active=${PROFILE}", "-jar","/app.jar"]
