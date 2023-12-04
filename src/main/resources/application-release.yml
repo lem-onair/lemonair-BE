@@ -3,8 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${MYSQL_URL}
     username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
-
+    password: ${MYSQL_PW}
   devtools:
     restart:
       enabled: true
